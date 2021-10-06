@@ -428,9 +428,7 @@ computeApproxNormSquaredEigenvector = function(cov.X, v1, lambda1, max.iter=5,
 #
 # Output: Reduced rank reconstruction of X.
 #
-reconstruct = function(X,V) {
-  # mean-center X
-  X = scale(X, scale=F)  
+reconstruct = function(X,V) {  
   X.recon = X %*% V %*% t(V) 
   return (X.recon)
 }

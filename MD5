@@ -1,11 +1,11 @@
-f438efd4d540a7979c605a78eab9800e *DESCRIPTION
+e461b44fa7d136f39bfc073ba1a278ad *DESCRIPTION
 9fdd81243c6cc60ab3358a638cc7a511 *NAMESPACE
-24b41629a526c976a9ade4799d0351de *R/EESPCA.R
+bc42be823f46576ef3c59771161260bd *R/EESPCA.R
 305651c50558189cb6b9a240acd631ed *R/OtherSPCAMethods.R
 bd4a0cf6278ada125861b1fd7f9c7e9b *build/vignette.rds
 60e647be0b826a18881fed0e21190ddb *inst/doc/EESPCA_Example.R
 b3ee0ed0d71653c262dc1264745948a1 *inst/doc/EESPCA_Example.Rnw
-43e1dc9f746268e089433a0ee4ba83bf *inst/doc/EESPCA_Example.pdf
+6527f4ff91316a80cfa826b5e88b3681 *inst/doc/EESPCA_Example.pdf
 1ae329c887a354bcb7472772298b93d8 *man/ComputeApproxNormSquaredEigenvector.Rd
 7f28732abc9d241df232e13d5e87eb5f *man/ComputeResidualMatrix.Rd
 9d52fa7d7fd8f40f587ce876e8ec467f *man/EESPCA-package.Rd
