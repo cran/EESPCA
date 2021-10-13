@@ -1,5 +1,5 @@
 export(eespca, eespcaCV, eespcaForK, powerIteration, computeApproxNormSquaredEigenvector, 
-       reconstructionError, computeResidualMatrix, tpower, tpowerPCACV, riflePCACV, rifleInit)
+       reconstruct, reconstructionError, computeResidualMatrix, tpower, tpowerPCACV, riflePCACV, rifleInit)
 importFrom(stats, cov, runif, sd)
 importFrom(utils, head)
 importFrom(rifle, rifle, initial.convex)

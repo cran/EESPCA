@@ -21,7 +21,8 @@ H. Robert Frost
 }
 \references{
     \itemize{
-    \item Frost, H. R. (2021). Eigenvectors from Eigenvalues Sparse Principal Component Analysis (EESPCA). arXiv e-prints. https://arxiv.org/abs/2006.01924  
+    \item Frost, H. R. (2021). Eigenvectors from Eigenvalues Sparse Principal Component Analysis (EESPCA).
+        Journal of Computational and Graphical Statistics. https://doi.org/10.1080/10618600.2021.1987254 
     }
 }
 \note{

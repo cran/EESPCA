@@ -423,12 +423,19 @@ computeApproxNormSquaredEigenvector = function(cov.X, v1, lambda1, max.iter=5,
 # Inputs:
 #
 #   X: An n-by-p data matrix whose top k principal components are contained the 
-#      p-by-k matrix V.
+#      p-by-k matrix V. 
 #   V: A p-by-k matrix containing the loadings for the top k principal components of X.
+#   center: If true (the default), X will be mean-centered before the reduced rank 
+#      reconstruction is computed. If the PCs in V were computed via SVD on 
+#      a mean-centered matrix or via eigen-decomposition of the sample covariance matrix, 
+#      this should be set to true.
 #
 # Output: Reduced rank reconstruction of X.
 #
-reconstruct = function(X,V) {  
+reconstruct = function(X,V,center=TRUE) {
+  if (center) {
+    X = scale(X, center=TRUE, scale=FALSE)
+  }
   X.recon = X %*% V %*% t(V) 
   return (X.recon)
 }
@@ -443,11 +450,18 @@ reconstruct = function(X,V) {
 #   X: An n-by-p data matrix whose top k principal components are contained the 
 #      p-by-k matrix V.
 #   V: A p-by-k matrix containing the loadings for the top k principal components of X.
+#   center: If true (the default), X will be mean-centered before the reduced rank 
+#      reconstruction is computed. If the PCs in V were computed via SVD on 
+#      a mean-centered matrix or via eigen-decomposition of the sample covariance matrix, 
+#      this should be set to true.
 #
 # Output: Computed residual matrix.
 #
-computeResidualMatrix = function(X,V) {   
-  X.residual = X-reconstruct(X,V)
+computeResidualMatrix = function(X,V,center=TRUE) {
+  if (center) {
+    X = scale(X, center=TRUE, scale=FALSE)    
+  }
+  X.residual = X-reconstruct(X,V, center=F) # don't need to center again
   return (X.residual)
 }
 
@@ -459,11 +473,15 @@ computeResidualMatrix = function(X,V) {
 #   X: An n-by-p data matrix whose top k principal components are contained the 
 #      p-by-k matrix V.
 #   V: A p-by-k matrix containing the loadings for the top k principal components of X.
+#   center: If true (the default), X will be mean-centered before the reduced rank 
+#      reconstruction is computed. If the PCs in V were computed via SVD on 
+#      a mean-centered matrix or via eigen-decomposition of the sample covariance matrix, 
+#      this should be set to true.
 #
 # Output: Squared Frobenius norm of residual matrix.
 #
-reconstructionError = function(X,V) {
-  X.resid = computeResidualMatrix(X,V)
+reconstructionError = function(X,V,center=TRUE) {
+  X.resid = computeResidualMatrix(X,V,center=center)
   return (sum((X.resid)^2))
 }
 
