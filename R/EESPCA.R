@@ -54,9 +54,13 @@ eespca = function(X, max.iter=20, sparse.threshold, lambda.diff.threshold=1e-6,
       lambda.diff.threshold=lambda.diff.threshold, trace=trace)
   v1 = power.iter.results$v1
   lambda1 = power.iter.results$lambda1    
-  #if (trace) {
-  #  message("Finished computing first PC, real loadings: ", paste(head(v1), collapse=", "), "...") 
-  #}  
+  if (trace) {
+    message("Finished computing first PC, real loadings: ", paste(head(v1), collapse=", "), "...") 
+    message("Eigenvalue: ", lambda1)
+    eigen.out = eigen(cov.X)
+    message("Eigen loadings: ", paste(head(eigen.out$vectors[,1]), collapse=", "), "...") 
+    message("Eigen values: ", paste(head(eigen.out$values), collapse=", "), "...") 
+  }  
   
   # Use sub-matrix eigenvalues to approximate the normed squared principal eigenvector loadings   
   approx.v1.sq = computeApproxNormSquaredEigenvector(cov.X, v1, lambda1, 
@@ -78,8 +82,10 @@ eespca = function(X, max.iter=20, sparse.threshold, lambda.diff.threshold=1e-6,
     message("Ratio of approx to real ev loadings: ", paste(head(ratio), collapse=", "), "...")
   }
   
-  # Scale the loadings by the ratio and renormalize
+  # Scale the loadings by the ratio
   v1.adj = v1 * ratio
+    
+  # Renormalize
   v1.adj = v1.adj/sqrt(sum(v1.adj^2))
   
   results = list()   
@@ -88,9 +94,15 @@ eespca = function(X, max.iter=20, sparse.threshold, lambda.diff.threshold=1e-6,
   results$v1.sparse = v1.adj
   results$ratio = ratio
     
-  # Set any adjusted loadings that are below the specified sparse.threshold to 0. 
+  # Which scaled loadings are below the threshold?
   below.threshold = which(abs(v1.adj) < sparse.threshold)
   
+  if (trace) {
+    message("Scaled loadings: ", paste(head(v1.adj), collapse=", "), "...")
+    message("Number below threshold: ", length(below.threshold), ", threshold: ", sparse.threshold)
+  }
+
+  # Set any adjusted loadings that are below the specified sparse.threshold to 0. 
   if (length(below.threshold) > 0) {
     results$v1.sparse[below.threshold] = 0
     l2 = sqrt(sum(results$v1.sparse^2))
@@ -401,11 +413,16 @@ computeApproxNormSquaredEigenvector = function(cov.X, v1, lambda1, max.iter=5,
   }
   
   if (trace) {
-    message("Submatrix eigenvalues: ",  paste(head(sub.evals), collapse=", "), "...")  
+    message("Lambda1: ", lambda1, ", submatrix eigenvalues: ",  
+        paste(head(sub.evals), collapse=", "), "...")
+    ratios = sub.evals/lambda1
+    message("Ratios : ", paste(head(ratios), collapse=", "), "...")    
+    
   }
   
-  # Use the approximate sub-matrix eigenvalues to approximate the squared principal eigenvector loadings
-  approx.v1.sq = 	as.vector(lambda1) - sub.evals/as.vector(lambda1)
+  # Use the approximate sub-matrix eigenvalues to approximate the squared principal 
+  # eigenvector loadings
+  approx.v1.sq = 	1 - sub.evals/lambda1
   
   # if any are negative, set to 0
   approx.v1.sq[which(approx.v1.sq < 0)] = 0

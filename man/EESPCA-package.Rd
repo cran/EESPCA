@@ -11,7 +11,7 @@ Implementation of Eigenvectors from Eigenvalues Sparse Principal Component Analy
 \tabular{ll}{
 Package: \tab EESPCA\cr
 Type: \tab Package\cr
-Version: \tab 0.3.0 \cr
+Version: \tab 0.5.0 \cr
 Date: \tab 2021\cr
 License: \tab GPL-2 \cr
 }
@@ -21,8 +21,7 @@ H. Robert Frost
 }
 \references{
     \itemize{
-    \item Frost, H. R. (2021). Eigenvectors from Eigenvalues Sparse Principal Component Analysis (EESPCA).
-        Journal of Computational and Graphical Statistics. https://doi.org/10.1080/10618600.2021.1987254 
+    \item Frost, H. R. (2021). Eigenvectors from Eigenvalues Sparse Principal Component Analysis (EESPCA). Journal of Computational and Graphical Statistics.
     }
 }
 \note{
