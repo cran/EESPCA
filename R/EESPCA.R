@@ -56,37 +56,41 @@ eespca = function(X, max.iter=20, sparse.threshold, lambda.diff.threshold=1e-6,
   lambda1 = power.iter.results$lambda1    
   if (trace) {
     message("Finished computing first PC, real loadings: ", paste(head(v1), collapse=", "), "...") 
-    message("Eigenvalue: ", lambda1)
-    eigen.out = eigen(cov.X)
-    message("Eigen loadings: ", paste(head(eigen.out$vectors[,1]), collapse=", "), "...") 
-    message("Eigen values: ", paste(head(eigen.out$values), collapse=", "), "...") 
   }  
   
   # Use sub-matrix eigenvalues to approximate the normed squared principal eigenvector loadings   
   approx.v1.sq = computeApproxNormSquaredEigenvector(cov.X, v1, lambda1, 
       max.iter=sub.mat.max.iter, lambda.diff.threshold=lambda.diff.threshold, trace=trace)                     
     
-  # Compute the ratio of approximate to real eigenvector loadings. These should all be 
-  # less than 1. The ratio will be larger for variables with a true loading 
-  # given the nature of the eigenvector loading approximation
-  ratio = sqrt(approx.v1.sq)/abs(v1)
-  
-  nan.indices = which(is.nan(ratio))
-  if (length(nan.indices) > 0) {
-    warning("Some eigenvector loading ratios are NaN, setting to 0.")
-    ratio[nan.indices] = 0
-  }
-  
-  if (trace) {
-    message("Approx loadings: ", paste(sqrt(head(approx.v1.sq)), collapse=", "), "...")
-    message("Ratio of approx to real ev loadings: ", paste(head(ratio), collapse=", "), "...")
-  }
-  
-  # Scale the loadings by the ratio
-  v1.adj = v1 * ratio
+  # Need to check if all approximate loadings are set to 0; this makes it impossible to get a unit length eigenvector.
+  if (sum(approx.v1.sq) == 0) {
+    warning("All approximate squared loadings are 0! Not scaling the loadings.")
+    v1.adj = v1
+    ratio = rep(1, p)
+  } else {
+    # Compute the ratio of approximate to real eigenvector loadings. These should all be 
+    # less than 1. The ratio will be larger for variables with a true loading 
+    # given the nature of the eigenvector loading approximation
+    ratio = sqrt(approx.v1.sq)/abs(v1)
     
-  # Renormalize
-  v1.adj = v1.adj/sqrt(sum(v1.adj^2))
+    # Check for NaN elements in ratio and set to 0
+    nan.indices = which(is.nan(ratio))
+    if (length(nan.indices) > 0) {
+      warning("Some eigenvector loading ratios are NaN, setting to 0.")
+      ratio[nan.indices] = 0
+    }
+  
+    if (trace) {
+      message("Approx loadings: ", paste(sqrt(head(approx.v1.sq)), collapse=", "), "...")
+      message("Ratio of approx to real ev loadings: ", paste(head(ratio), collapse=", "), "...")
+    }
+    
+    # Scale the loadings by the ratio
+    v1.adj = v1 * ratio
+    
+    # Renormalize
+    v1.adj = v1.adj/sqrt(sum(v1.adj^2))
+  }
   
   results = list()   
   results$v1 = v1 

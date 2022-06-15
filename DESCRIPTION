@@ -2,7 +2,7 @@ Package: EESPCA
 Type: Package
 Title: Eigenvectors from Eigenvalues Sparse Principal Component
         Analysis (EESPCA)
-Version: 0.6.0
+Version: 0.7.0
 Author: H. Robert Frost
 Maintainer: H. Robert Frost <rob.frost@dartmouth.edu>
 Description: Contains logic for computing sparse principal components via the EESPCA method, 
@@ -16,6 +16,6 @@ License: GPL (>= 2)
 Copyright: Dartmouth College
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2022-05-16 14:38:15 UTC; robfrost
+Packaged: 2022-06-15 19:58:05 UTC; d37329b
 Repository: CRAN
-Date/Publication: 2022-05-16 15:10:02 UTC
+Date/Publication: 2022-06-15 20:10:02 UTC
